@@ -15,9 +15,10 @@ npm install
 
 1) Copy `.env.example` -> `.env`.
 2) Add a PORT, eg 3000.
-3) If not already done, register a [Test App](https://developer.spotify.com/documentation/general/guides/app-settings/#register-your-app) on a dev account.
+3) If not already done, register a Spotify [Test App](https://developer.spotify.com/documentation/general/guides/app-settings/#register-your-app) on a dev account.
 4) Add the client ID (`SPOTIFY_CLIENT_ID`), client secret (`SPOTIFY_CLIENT_SECRET`) from the spotify app dashboard.
-5) For local dev add the redirect url (`SPOTIFY_REDIRECT_URI`), should use the domain of the locally running `spotify-artist-explorer-client` website as `'http://localhost:8080/auth.html'`.
+5) For local dev add the redirect url (`SPOTIFY_REDIRECT_URI`), should use the domain of the locally running `spotify-artist-explorer-client` website eg `'http://localhost:8080/auth.html'`.
+6) Add this redirect url to the list of Redirect URIs on your Spotify App (Dashboard -> Settings -> Redirect URIs).
 
 ## Run tests
 
