@@ -10,6 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "envy-optional": "github:SeanSobey/envy",
     "express": "^4.17.1",
     "spotify-web-api-node": "^4.0.0"
   }
