@@ -24,3 +24,36 @@ npm install
 ```
 npm run test
 ```
+
+## TODO
+
+### Code
+
+- [ ] Convert express app to GCF, eg:
+```js
+module.exports = function(request, response) {
+	...
+}
+```
+```
+https://cloud.google.com/functions/docs/concepts/nodejs-10-runtime
+https://cloud.google.com/functions/docs/writing/#structuring_source_code
+```
+- [ ] Implement [development environment](https://cloud.google.com/nodejs/docs/setup).
+- [ ] Dockerize
+
+
+### Tests
+
+- [ ] Unit tests
+- [ ] Integration test
+- [ ] Healthcheck?
+
+### Deployment
+
+- [ ] GitHub hook for tests?
+- [ ] Codecov
+- [ ] GCF deploy
+```
+https://cloud.google.com/functions/docs/deploying/repo
+```

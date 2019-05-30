@@ -27,10 +27,14 @@ app.post('/', (request, response) => {
 	}
 	return spotifyApi.authorizationCodeGrant(code)
 		.then((data) => {
-			return response.json(data.body);
+			response.json(data.body);
+			console.debug('success', request, response);
+			return response;
 		})
 		.catch((error) => {
-			return response.status(500).send(error);
+			response.status(500).send(error);
+			console.error('error', error, request, response);
+			return response;
 		});
 });
 
