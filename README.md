@@ -39,9 +39,9 @@ module.exports = function(request, response) {
 https://cloud.google.com/functions/docs/concepts/nodejs-10-runtime
 https://cloud.google.com/functions/docs/writing/#structuring_source_code
 ```
+- [ ] CORS, eg see [this](https://stackoverflow.com/questions/42140247/access-control-allow-origin-not-working-google-cloud-functions-gcf).
 - [ ] Implement [development environment](https://cloud.google.com/nodejs/docs/setup).
 - [ ] Dockerize
-
 
 ### Tests
 
@@ -51,9 +51,10 @@ https://cloud.google.com/functions/docs/writing/#structuring_source_code
 
 ### Deployment
 
-- [ ] GitHub hook for tests?
-- [ ] Codecov
 - [ ] GCF deploy
 ```
 https://cloud.google.com/functions/docs/deploying/repo
 ```
+- [ ] CORS?
+- [ ] GitHub hook for tests?
+- [ ] Codecov
