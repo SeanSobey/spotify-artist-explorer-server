@@ -3,6 +3,7 @@
 
 const SpotifyWebApi = require('spotify-web-api-node');
 const envy = require('envy-optional');
+const util = require('util');
 
 const config = envy(undefined, { checkPermissions: false });
 
@@ -11,6 +12,10 @@ const spotifyApi = new SpotifyWebApi({
 	clientSecret: config.spotifyClientSecret,
 	redirectUri: config.spotifyRedirectUri,
 });
+/**@type {Array<string>}*/
+const allowOrigins = config.allowOrigins.split(';').map((origin) => origin.toLowerCase());
+/**@type {boolean}*/
+const logging = config.logging.toLowerCase() === 'true';
 
 /**
  * HTTP Cloud Function.
@@ -23,26 +28,42 @@ const spotifyApi = new SpotifyWebApi({
  */
 exports.server = (request, response) => {
 
-	response.header('Content-Type', 'application/json');
-	response.header('Access-Control-Allow-Origin', '*');
-	response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-
-	if (request.method == 'OPTIONS') {
-		return response.status(204).send('');
-	}
-	const code = request.query.code;
-	if (!code) {
-		return response.status(403).send('Require code query parameter');
-	}
-	return spotifyApi.authorizationCodeGrant(code)
-		.then((data) => {
-			response.json(data.body);
-			console.debug('success', request, response);
-			return response;
-		})
-		.catch((error) => {
-			response.status(500).send(error);
+	try {
+		if (request.method == 'OPTIONS') {
+			return response.status(204).send('');
+		}
+		const origin = request.header('Origin');
+		if (allowOrigins.includes('*')) {
+			response.header('Access-Control-Allow-Origin', '*');
+		} else if (!origin) {
+			return response.status(400).send('Require origin header');
+		} else if (allowOrigins.includes(origin.toLowerCase())) {
+			response.header('Access-Control-Allow-Origin', origin);
+		} else {
+			return response.send();
+		}
+		response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+		const code = request.query.code;
+		if (!code) {
+			return response.status(400).send('Require code query parameter');
+		}
+		return spotifyApi.authorizationCodeGrant(code)
+			.then((data) => {
+				if (logging) {
+					console.debug('success', util.inspect(request), util.inspect(response));
+				}
+				return response.json(data.body);
+			})
+			.catch((/**@type {Error}*/error) => {
+				if (logging) {
+					console.error('error', error, util.inspect(request), util.inspect(response));
+				}
+				return response.status(500).send(error.message);
+			});
+	} catch (/**@type {Error}*/error) {
+		if (logging) {
 			console.error('error', error, request, response);
-			return response;
-		});
+		}
+		return response.status(500).send(error.message);
+	}
 };
