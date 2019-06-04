@@ -9,6 +9,6 @@ const config = envy(undefined, { checkPermissions: false });
 
 const app = express();
 
-app.post('/', server);
+app.get('/', server);
 
 app.listen(config.port, () => console.log(`App listening on port ${config.port}`));
